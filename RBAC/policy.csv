@@ -1,0 +1,4 @@
+p, professor, data, write
+p, student, data, read
+
+g, alice, data_admin
