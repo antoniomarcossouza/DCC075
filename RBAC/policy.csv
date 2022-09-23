@@ -1,4 +1,5 @@
 p, professor, data, write
 p, student, data, read
 
-g, alice, data_admin
+g, edelberto, professor
+g, antonio, student
