@@ -1,5 +1,3 @@
-from ast import match_case
-from traceback import print_tb
 import casbin
 
 
@@ -26,10 +24,10 @@ class User:
     def show_permissions(user):
         enforcer = casbin.Enforcer("./model.conf", "./policy.csv")
 
-        sub = user.strip()  # the user that wants to access a resource.
-        obj = "data"  # the resource that is going to be accessed.
-        read = "read"  # the operation that the user performs on the resource.
-        write = "write"  # the operation that the user performs on the resource.
+        sub = user.strip()
+        obj = "data"
+        read = "read"
+        write = "write"
 
         if enforcer.enforce(sub, obj, write):
             print("This user has the following permissions: read, write")
