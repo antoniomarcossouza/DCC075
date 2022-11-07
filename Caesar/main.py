@@ -36,23 +36,28 @@ letter_frequency = {
 
 def cipher(text, key, decrypt):
     output = ""
-    for char in text:
+    for char in text.lower():
+        # Não muda o caractere se ele não estiver na tabela ASCII padrão
         if char not in alphabet:
             output += char
             continue
 
+        # Mapeia a posição da string ao alfabeto
         index = alphabet.index(char.lower())
-
+        
         if not decrypt:
+            # Soma a chave, criptografando o caractere
             new_char = alphabet[(index + key) % len(alphabet)]
         else:
+            # Subtrai a chave, descriptografando o caractere
             new_char = alphabet[(index - key) % len(alphabet)]
 
-        output += new_char.upper() if char.isupper() else new_char
+        # Adicionando o caractere alterado ao retorno
+        output += new_char
 
     return output
 
-
+# Aqui é calculado o módulo da diferença entre a frequência esperada da letra e a frequência real dela
 def difference(text):
     counter = Counter(text)
     return sum(
@@ -60,9 +65,10 @@ def difference(text):
             abs(letter_frequency[letter] - counter.get(letter, 0) * 100 / len(text))
             for letter in alphabet
         ]
-    ) / len(alphabet)
+    )
 
-
+# Para quebrar a cifra, descriptografamos por força bruta, utilizando todas as chaves possíveis
+# Porém, precisamos encontrar a chave automaticamente ao invés de identificarmos a string
 def break_cipher(cipher_text):
     lowest_difference = math.inf
     encryption_key = 0
@@ -71,20 +77,21 @@ def break_cipher(cipher_text):
         current_plain_text = cipher(cipher_text, key, True)
         current_difference = difference(current_plain_text)
 
+        # A string que tiver a menor diferença entre frequência esperada
+        # e sua frequência real é a mais provável de estar correta
         if current_difference < lowest_difference:
             lowest_difference = current_difference
             encryption_key = key
 
     return encryption_key
 
-
 if __name__ == "__main__":
-    quote = "The quick brown fox jumps over the lazy dog"
+    quote = "the quick brown fox jumps over the lazy dog"
     caesar_output = cipher(quote, 13, False)
     print("Caesar Cipher - Key: 13")
     print(f"'{quote}' -> '{caesar_output}'\n")
     
-    cipher_quote = "Tli uymgo fvsar jsb nyqtw sziv xli pedc hsk"
+    cipher_quote = "xli uymgo fvsar jsb nyqtw sziv xli pedc hsk"
     encryption_key = break_cipher(cipher_quote)
     print(f"Caesar Cipher - Cipher: '{cipher_quote}'")
     print(f"Key: {encryption_key}")
