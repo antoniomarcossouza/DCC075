@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "nist-randomness-test-suite": "^0.0.7"
+  }
+}
